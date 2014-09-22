@@ -28,10 +28,15 @@ int main()
 	tree1.makeTree(test);
 	//tree1.makeTree(v1);
 	cout << tree0.toString("Tree 0") << endl << endl;
-	cout << tree1.toString("Tree 1") << endl;
+	//cout << tree1.toString("Tree 1") << endl;
 
 	cout << "Should be 5: " << tree0.countFringe() << endl;
-	cout << "Should be 3: " << tree1.countFringe() << endl;
+	//cout << "Should be 3: " << tree1.countFringe() << endl;
+
+	cout << "Should be 25: "<< tree0.predecessor(10)<< endl;
+	cout << "Should be null: " << tree0.predecessor(25) << endl;
+
+	cout << "Should be 2: " << tree0.nodesInLevel(1);
 
 
 

@@ -131,13 +131,25 @@ int BinarySearchTree<Etype>::count(TreeNode<Etype>*t)
 template <class Etype>
 TreeNode<Etype> * BinarySearchTree<Etype>::findKthInOrder(TreeNode<Etype>*t, int k)
 {
+	
 	return NULL;
 }
 
 template <class Etype>
 int BinarySearchTree<Etype>::nodesInLevel(TreeNode<Etype>*&t, int level)
 {
-	return -1;
+	int count = 0;
+	if (t == NULL)
+	{
+		return 0;
+	}
+	int total = 0;
+	for (int i = 0; i <= level; i++)
+	{
+		if (t->left != NULL) t= t->left;
+		//if (t->right != NULL) nodesInLevel(t->right);
+	}
+	
 }
 
 template <class Etype>
@@ -170,7 +182,18 @@ TreeNode<Etype> * BinarySearchTree<Etype>::maximumEle(TreeNode<Etype> * & t)
 template <class Etype>
 TreeNode<Etype> * BinarySearchTree<Etype>::predecessor(TreeNode<Etype> * & t)
 {
-	return NULL;
+	if (t == NULL)
+	{
+		return NULL;
+	}
+	if (t->parent != NULL)
+	{
+		return t->parent;
+	}
+	else
+	{
+		return NULL;
+	}
 }
 
 template <class Etype>
