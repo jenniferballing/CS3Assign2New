@@ -31,7 +31,7 @@ protected:
 	TreeNode<Etype> * maximumEle(TreeNode<Etype> * & t);
 	TreeNode<Etype> * predecessor(TreeNode<Etype> * & t);
 	int nodesInLevel(TreeNode<Etype> * & t, int level, int count);
-	TreeNode<Etype> * findKthInOrder(TreeNode<Etype> * t, int k, int count);
+	TreeNode<Etype> * findKthInOrder(TreeNode<Etype> * t, int k);
 	int count(TreeNode<Etype> *t);
 	int width(TreeNode<Etype> * t, int &height);
 	bool isIsomorphic(TreeNode<Etype> *t1, TreeNode<Etype> *t2);
@@ -77,8 +77,7 @@ public:
 		return nodesInLevel(root, level, count); 
 	}
 	int findKthInOrder(int k) {
-		int count=0;
-		TreeNode<Etype>* t = findKthInOrder(root, k, count);
+		TreeNode<Etype>* t = findKthInOrder(root, k);
 		if (t == NULL) return -999;
 		return t->element;
 	}
@@ -105,7 +104,12 @@ TreeNode<Etype>*  BinarySearchTree<Etype>::leastCommonAncestor(TreeNode < Etype>
 template <class Etype>
 bool BinarySearchTree<Etype>::isIsomorphic(TreeNode<Etype>*t1, TreeNode<Etype>*t2)
 {
-	return false;
+	if (t1 == NULL && t2 == NULL) return true;
+	
+	if (t1 == NULL ^ t2 == NULL) return false;
+
+	bool is = isIsomorphic(t1->right, t2->right);
+	bool iso = isIsomorphic(t1->left, t2->left);
 }
 
 template <class Etype>
@@ -132,16 +136,41 @@ int BinarySearchTree<Etype>::count(TreeNode<Etype>*t)
 // Using the iterator would be better, as this repeatedly searches the left subtree.
 
 template <class Etype>
-TreeNode<Etype> * BinarySearchTree<Etype>::findKthInOrder(TreeNode<Etype>*t, int k, int count)
+TreeNode<Etype> * BinarySearchTree<Etype>::findKthInOrder(TreeNode<Etype>*t, int k)
 {
+	int count = 1;
+	
 	if (t == NULL)return NULL;
 
+	while (t->left != NULL)t = t->left;
+	
 	if (count == k) return t;
-
-	count++;
-
-	return findKthInOrder(t->left, k, count);
-	return findKthInOrder(t->right, k, count);
+	
+	while (count<k)
+	{
+		count++;
+		if (t->parent == NULL) return NULL;
+		
+		t = t->parent;
+		
+		if (count == k) return t;
+		
+		if (t->right != NULL && t->parent != NULL)
+		{
+			count++;
+			t = t->right;
+			if (count == k) return t;
+		}
+		
+		if (t->parent == NULL) return NULL;
+		
+		if (t->parent->parent != NULL)
+		{
+			count++;
+			t = t->parent->parent;
+			if (count == k) return t;
+		}
+	}return NULL;
 }
 
 template <class Etype>
@@ -205,18 +234,6 @@ TreeNode<Etype> * BinarySearchTree<Etype>::predecessor(TreeNode<Etype> * & t)
 		else return predecessor(t->left);
 	}	
 }
-	/*if (t == NULL)
-	{
-		return NULL;
-	}
-	if (t->parent != NULL)
-	{
-		return t->parent;
-	}
-	else
-	{
-		return NULL;
-	}*/
 
 template <class Etype>
 string BinarySearchTree<Etype>::toString(TreeNode<Etype> *t, string indent) const
@@ -322,7 +339,6 @@ void BinarySearchTree<Etype>::makeEmpty(TreeNode<Etype> *&t)
 	t = NULL;
 	delete t;
 }
-
 
 template <class Etype>
 TreeNode<Etype> * BinarySearchTree<Etype>::clone(TreeNode<Etype> *t, TreeNode<Etype> *parent) const
