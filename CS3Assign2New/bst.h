@@ -30,8 +30,8 @@ protected:
 	TreeNode<Etype> * minimumEle(TreeNode<Etype> * & t);
 	TreeNode<Etype> * maximumEle(TreeNode<Etype> * & t);
 	TreeNode<Etype> * predecessor(TreeNode<Etype> * & t);
-	int nodesInLevel(TreeNode<Etype> * & t, int level);
-	TreeNode<Etype> * findKthInOrder(TreeNode<Etype> * t, int k);
+	int nodesInLevel(TreeNode<Etype> * & t, int level, int count);
+	TreeNode<Etype> * findKthInOrder(TreeNode<Etype> * t, int k, int count);
 	int count(TreeNode<Etype> *t);
 	int width(TreeNode<Etype> * t, int &height);
 	bool isIsomorphic(TreeNode<Etype> *t1, TreeNode<Etype> *t2);
@@ -72,9 +72,13 @@ public:
 	{
 		return msg + "\n" + traverse(root);
 	}
-	int nodesInLevel(int level) { return nodesInLevel(root, level); }
+	int nodesInLevel(int level) { 
+		int count=0;
+		return nodesInLevel(root, level, count); 
+	}
 	int findKthInOrder(int k) {
-		TreeNode<Etype>* t = findKthInOrder(root, k);
+		int count=0;
+		TreeNode<Etype>* t = findKthInOrder(root, k, count);
 		if (t == NULL) return -999;
 		return t->element;
 	}
@@ -122,34 +126,36 @@ int BinarySearchTree<Etype>::count(TreeNode<Etype>*t)
 	{
 		return 0;
 	}
-	int num = 1 + count(t->left) + count(t->right);
-	return num;
+	return 1 + count(t->left) + count(t->right);
 }
 
 // Using the iterator would be better, as this repeatedly searches the left subtree.
 
 template <class Etype>
-TreeNode<Etype> * BinarySearchTree<Etype>::findKthInOrder(TreeNode<Etype>*t, int k)
+TreeNode<Etype> * BinarySearchTree<Etype>::findKthInOrder(TreeNode<Etype>*t, int k, int count)
 {
+	if (t == NULL)return NULL;
+
+	if (count == k) return t;
+
+	count++;
+
 	
-	return NULL;
+
+	return findKthInOrder(t->left, k, count);
+	return findKthInOrder(t->right, k, count);
 }
 
 template <class Etype>
-int BinarySearchTree<Etype>::nodesInLevel(TreeNode<Etype>*&t, int level)
+int BinarySearchTree<Etype>::nodesInLevel(TreeNode<Etype>*&t, int level, int count)
 {
-	int count = 0;
-	if (t == NULL)
+	if (t == NULL) return 0;
+	if (count == level)
 	{
-		return 0;
+		return 1;
 	}
-	int total = 0;
-	for (int i = 0; i <= level; i++)
-	{
-		if (t->left != NULL) t= t->left;
-		//if (t->right != NULL) nodesInLevel(t->right);
-	}
-	
+	count++;
+	return nodesInLevel(t->left, level, count) + nodesInLevel(t->right, level, count);
 }
 
 template <class Etype>
