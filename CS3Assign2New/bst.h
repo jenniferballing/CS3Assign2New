@@ -140,8 +140,6 @@ TreeNode<Etype> * BinarySearchTree<Etype>::findKthInOrder(TreeNode<Etype>*t, int
 
 	count++;
 
-	
-
 	return findKthInOrder(t->left, k, count);
 	return findKthInOrder(t->right, k, count);
 }
@@ -188,7 +186,26 @@ TreeNode<Etype> * BinarySearchTree<Etype>::maximumEle(TreeNode<Etype> * & t)
 template <class Etype>
 TreeNode<Etype> * BinarySearchTree<Etype>::predecessor(TreeNode<Etype> * & t)
 {
-	if (t == NULL)
+	if (t == NULL)return NULL;
+	if (t->parent != NULL)
+	{
+		if (t->element > t->parent->element && t->left == NULL) return t->parent;
+		if (t->element > t->parent->element && t->left->element > t->parent->element)
+		{
+			return t->left;
+		}
+
+		if (t->parent->parent != NULL)
+		{
+			if (t->element < t->parent->element && t->parent->element> t->parent->parent->element)
+			{
+				return t->parent->parent;
+			}
+		}
+		else return predecessor(t->left);
+	}	
+}
+	/*if (t == NULL)
 	{
 		return NULL;
 	}
@@ -199,8 +216,7 @@ TreeNode<Etype> * BinarySearchTree<Etype>::predecessor(TreeNode<Etype> * & t)
 	else
 	{
 		return NULL;
-	}
-}
+	}*/
 
 template <class Etype>
 string BinarySearchTree<Etype>::toString(TreeNode<Etype> *t, string indent) const

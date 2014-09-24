@@ -8,7 +8,8 @@ int main()
 	const int SIZE = 8;
 	BinarySearchTree<int> tree0, tree1, tree2, tree3, tree4, tree5, tree6;
 	//vector<int> v0{ 25, 10, 60, 55, 45, 30, 14, 10, 75, 80, 20, 10, 5, 3, 61, 62, 63 };
-	vector <int> v0{ 25, 10, 60, 55, 45, 30, 14, 75, 80, 5, 20 };
+	//vector <int> v0{ 25, 10, 60, 55, 45, 30, 14, 75, 80, 5, 20 };
+	vector<int> v0{ 11, 9, 15, 6, 7, 4, 14, 16, 21 };
 	vector<int> test{ 1, 10, 15, 2, 8, 6, 7, 16, 10, 75, 80, 20 };
 	vector<int> v1{ 25, 10, 60, 55, 58, 56, 14, 10, 75, 80, 20, 10, 5, 7, 61, 62, 63 };
 	vector<int> v2, v3, v4, v5, v6;
@@ -34,18 +35,19 @@ int main()
 	//cout << "Should be 5: " << tree0.countFringe() << endl;
 	//cout << "Should be 3: " << tree1.countFringe() << endl;
 
-	//cout << "Should be 25: "<< tree0.predecessor(10)<< endl;
-	//cout << "Should be null: " << tree0.predecessor(25) << endl;
+	cout << "Should be 11: "<< tree0.predecessor(14)<< endl;
+	cout << "Should be 14: " << tree0.predecessor(15) << endl;
+	cout << "Should be 6: " << tree0.predecessor(7) << endl;
 
 	//cout << "Should be 1: " << tree0.nodesInLevel(0) <<endl;
 	//cout << "Should be 2: " << tree0.nodesInLevel(1) << endl;
 	//cout << "Should be 4: " << tree0.nodesInLevel(2) << endl;
 	//cout << "Should be 3: " << tree0.nodesInLevel(3) << endl;
 
-	cout << "Should be 5: " << tree0.findKthInOrder(1) << endl;
+	/*cout << "Should be 5: " << tree0.findKthInOrder(1) << endl;
 	cout << "Should be 10: " << tree0.findKthInOrder(2) << endl;
 	cout << "Should be 14: " << tree0.findKthInOrder(3) << endl;
-	cout << "Should be NULL: " << tree0.findKthInOrder(25) << endl;
+	cout << "Should be NULL: " << tree0.findKthInOrder(4) << endl;*/
 
 
 
