@@ -91,6 +91,8 @@ public:
 
 };
 
+//Accidently left written by Professor
+//Big-oh expression: O(n)
 template <class Etype>
 TreeNode<Etype>*  BinarySearchTree<Etype>::leastCommonAncestor(TreeNode < Etype>* r, Etype a, Etype b)
 {
@@ -101,36 +103,44 @@ TreeNode<Etype>*  BinarySearchTree<Etype>::leastCommonAncestor(TreeNode < Etype>
 	return leastCommonAncestor(r->right, a, b);
 }
 
+
+//Big-oh expression: O(n^2)
 template <class Etype>
 bool BinarySearchTree<Etype>::isIsomorphic(TreeNode<Etype>*t1, TreeNode<Etype>*t2)
 {
-	if (t1 == NULL && t2 == NULL) return true;
+	if (t1 == NULL && t2 == NULL) return true; 
 	
-	if (t1 == NULL ^ t2 == NULL) return false;
+	if (t1 == NULL ^ t2 == NULL) return false; //if the nodes are not the same
 
+	//keep running until we find the null nodes
 	bool is = isIsomorphic(t1->right, t2->right);
 	bool iso = isIsomorphic(t1->left, t2->left);
 }
 
+
+//Big-oh expression: O(n^4)
 template <class Etype>
 bool BinarySearchTree<Etype>::isQuasiIsomorphic(TreeNode<Etype>*t1, TreeNode<Etype>*t2 )
 {
+	//create trees so that count and width can be reused
 	BinarySearchTree<Etype> *tree1 = new BinarySearchTree<Etype>();
 	BinarySearchTree<Etype> *tree2 = new BinarySearchTree<Etype>();
 
 	int t1NumNodes = tree1->count(t1);
 	int t2NumNodes = tree2->count(t2);
-	if (t1NumNodes != t2NumNodes) return false;
+	if (t1NumNodes != t2NumNodes) return false; //if the number of nodes is not the same- it is not quasi
 
 	int tree1Height=0, tree2Height=0;
 	int t1Width = tree1->width(t1, tree1Height);
 	int t2Width = tree2->width(t2, tree2Height);
-	if (t1Width != t2Width)return false;
+	if (t1Width != t2Width)return false; //if the width is not the same- it is not quasi
 
-	if (tree1Height != tree2Height)return false;
+	if (tree1Height != tree2Height)return false; //if the height is not the same- it is not quasi
 
 	return true;
 }
+
+//Big-oh expression: O(n)
 template <class Etype>
 int BinarySearchTree<Etype>::width(TreeNode<Etype> *t, int &height)
 {
@@ -140,18 +150,24 @@ int BinarySearchTree<Etype>::width(TreeNode<Etype> *t, int &height)
 		return 0;
 	}
 	
+	//temp variables
 	int lHeight= height, rHeight= height;
 
 	int lWidth = width(t->left, lHeight);
 	int rWidth = width(t->right, rHeight);
 	
+	//set the height to the longest subtree
 	if (lHeight > rHeight) height = lHeight;
 	else height = rHeight;
 
 	height++;
 
+	//add the height of the two trees plus the root
 	return lHeight + rHeight + 1;
 }
+
+
+//Big-oh expression: O(n)
 template <class Etype>
 int BinarySearchTree<Etype>::count(TreeNode<Etype>*t)
 {
@@ -164,6 +180,8 @@ int BinarySearchTree<Etype>::count(TreeNode<Etype>*t)
 
 // Using the iterator would be better, as this repeatedly searches the left subtree.
 
+
+//Big-oh expression: O(n)
 template <class Etype>
 TreeNode<Etype> * BinarySearchTree<Etype>::findKthInOrder(TreeNode<Etype>*t, int k)
 {
@@ -171,9 +189,9 @@ TreeNode<Etype> * BinarySearchTree<Etype>::findKthInOrder(TreeNode<Etype>*t, int
 	
 	if (t == NULL)return NULL;
 
-	while (t->left != NULL)t = t->left;
+	while (t->left != NULL)t = t->left;// move to the left-most node
 	
-	if (count == k) return t;
+	if (count == k) return t;//if k=1
 	
 	while (count<k)
 	{
@@ -184,7 +202,7 @@ TreeNode<Etype> * BinarySearchTree<Etype>::findKthInOrder(TreeNode<Etype>*t, int
 		
 		if (count == k) return t;
 		
-		if (t->right != NULL && t->parent != NULL)
+		if (t->right != NULL && t->parent != NULL) //check right child
 		{
 			count++;
 			t = t->right;
@@ -193,7 +211,7 @@ TreeNode<Etype> * BinarySearchTree<Etype>::findKthInOrder(TreeNode<Etype>*t, int
 		
 		if (t->parent == NULL) return NULL;
 		
-		if (t->parent->parent != NULL)
+		if (t->parent->parent != NULL) //check grandparent
 		{
 			count++;
 			t = t->parent->parent;
@@ -202,6 +220,8 @@ TreeNode<Etype> * BinarySearchTree<Etype>::findKthInOrder(TreeNode<Etype>*t, int
 	}return NULL;
 }
 
+
+//Big-oh expression: Olog(n)
 template <class Etype>
 int BinarySearchTree<Etype>::nodesInLevel(TreeNode<Etype>*&t, int level, int count)
 {
@@ -241,29 +261,28 @@ TreeNode<Etype> * BinarySearchTree<Etype>::maximumEle(TreeNode<Etype> * & t)
 	return t;
 }
 
+
+
+//Big-oh expression: Olog(n)
 template <class Etype>
 TreeNode<Etype> * BinarySearchTree<Etype>::predecessor(TreeNode<Etype> * & t)
 {
 	if (t == NULL)return NULL;
 	if (t->parent != NULL)
 	{
-		if (t->element > t->parent->element && t->left == NULL) return t->parent;
-		if (t->element > t->parent->element && t->left->element > t->parent->element)
-		{
-			return t->left;
-		}
+		if (t->element > t->parent->element && t->left == NULL) return t->parent; // check parent value
 
-		if (t->parent->parent != NULL)
+		if (t->element > t->parent->element && t->left->element > t->parent->element) return t->left; //check left element
+
+		if (t->parent->parent != NULL)//check grandparent
 		{
-			if (t->element < t->parent->element && t->parent->element> t->parent->parent->element)
-			{
-				return t->parent->parent;
-			}
+			if (t->element < t->parent->element && t->parent->element> t->parent->parent->element) return t->parent->parent;
 		}
 		else return predecessor(t->left);
 	}	
 }
 
+//Big-oh expression: O(n)
 template <class Etype>
 string BinarySearchTree<Etype>::toString(TreeNode<Etype> *t, string indent) const
 {
@@ -291,23 +310,15 @@ string BinarySearchTree<Etype>::toString(TreeNode<Etype> *t, string indent) cons
 
 		if (t->left != NULL)
 		{
-			left = "\n" + toString(t->left, indent + "  ");
-			/*sl << t->left->element;
-			sl >> left;
-			element += "(" + parent + ")" + left + indent;
-			element += toString(t->left, indent);*/
+			left = "\n" + toString(t->left, indent + "  ");//create left string
 		}
 		else left = "";
 		if (t->right != NULL)
 		{
-			right = "\n" + toString(t->right, indent + "  ");
-			/*sr << t->right->element;
-			sr >> right;
-			element += "(" + parent + ")" + right + indent;
-			element += toString(t->right, indent);*/
+			right = "\n" + toString(t->right, indent + "  ");//create right string
 		}
 		else right = "";
-		return right + indent + current + "(" + parent + ")" + left + indent + "\n";
+		return right + indent + current + "(" + parent + ")" + left + indent + "\n"; //combine strings and print with indent
 	}
 }
 
@@ -346,6 +357,8 @@ void BinarySearchTree<Etype>::makeTree(vector<Etype> all)
 		insert(all[i]);
 }
 
+
+//Big-oh expression: O(n)
 template <class Etype>
 void BinarySearchTree<Etype>::makeEmpty(TreeNode<Etype> *&t)
 {
@@ -353,19 +366,19 @@ void BinarySearchTree<Etype>::makeEmpty(TreeNode<Etype> *&t)
 	{
 		return;
 	}
-	if (t->left != NULL)
+	if (t->left != NULL) //go left and delete
 	{
 		TreeNode <Etype> *left = new TreeNode <Etype>();
 		left = t->left;
 		makeEmpty(left);
 	}
-	if (t->right != NULL)
+	if (t->right != NULL) //go right and delete
 	{
 		TreeNode <Etype> *right = new TreeNode <Etype>();
 		right = t->right;
 		makeEmpty(right);
 	}
-	t = NULL;
+	t = NULL; //set to null and delete
 	delete t;
 }
 
@@ -380,6 +393,8 @@ TreeNode<Etype> * BinarySearchTree<Etype>::clone(TreeNode<Etype> *t, TreeNode<Et
 	return newNode;
 }
 
+
+//Big-oh expression: O(n)
 template <class Etype>
 int BinarySearchTree<Etype>::countFringe(TreeNode<Etype> *t) const
 {
@@ -388,7 +403,7 @@ int BinarySearchTree<Etype>::countFringe(TreeNode<Etype> *t) const
 	{
 		return 0;
 	}
-	if (t->left == NULL && t->right == NULL)
+	if (t->left == NULL && t->right == NULL)//check for leaf node
 	{
 		count = 1;
 	}
