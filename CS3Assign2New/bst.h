@@ -113,15 +113,44 @@ bool BinarySearchTree<Etype>::isIsomorphic(TreeNode<Etype>*t1, TreeNode<Etype>*t
 }
 
 template <class Etype>
-bool BinarySearchTree<Etype>::isQuasiIsomorphic(TreeNode<Etype>*t1, TreeNode<Etype>*t2)
+bool BinarySearchTree<Etype>::isQuasiIsomorphic(TreeNode<Etype>*t1, TreeNode<Etype>*t2 )
 {
+	BinarySearchTree<Etype> *tree1 = new BinarySearchTree<Etype>();
+	BinarySearchTree<Etype> *tree2 = new BinarySearchTree<Etype>();
 
-	return false;
+	int t1NumNodes = tree1->count(t1);
+	int t2NumNodes = tree2->count(t2);
+	if (t1NumNodes != t2NumNodes) return false;
+
+	int tree1Height=0, tree2Height=0;
+	int t1Width = tree1->width(t1, tree1Height);
+	int t2Width = tree2->width(t2, tree2Height);
+	if (t1Width != t2Width)return false;
+
+	if (tree1Height != tree2Height)return false;
+
+	return true;
 }
 template <class Etype>
 int BinarySearchTree<Etype>::width(TreeNode<Etype> *t, int &height)
 {
-	return -1;
+	if (t == NULL)
+	{
+		height = 0;
+		return 0;
+	}
+	
+	int lHeight= height, rHeight= height;
+
+	int lWidth = width(t->left, lHeight);
+	int rWidth = width(t->right, rHeight);
+	
+	if (lHeight > rHeight) height = lHeight;
+	else height = rHeight;
+
+	height++;
+
+	return lHeight + rHeight + 1;
 }
 template <class Etype>
 int BinarySearchTree<Etype>::count(TreeNode<Etype>*t)
